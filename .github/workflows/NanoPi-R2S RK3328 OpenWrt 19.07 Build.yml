@@ -119,6 +119,14 @@ jobs:
           cp ../xt_FULLCONENAT/ipv4-netfilter.Kconfig kernel/net/ipv4/netfilter/Kconfig
           cp ../xt_FULLCONENAT/netfilter.Kconfig kernel/net/netfilter/Kconfig
 
+          git clone https://github.com/openwrt/openwrt
+          rm openwrt/target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
+          rm openwrt/target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
+          friendlywrt/scripts/patch-kernel.sh kernel openwrt/target/linux/generic/backport-5.4
+          friendlywrt/scripts/patch-kernel.sh kernel openwrt/target/linux/generic/pending-5.4
+          friendlywrt/scripts/patch-kernel.sh kernel openwrt/target/linux/generic/hack-5.4
+          echo "CONFIG_NETFILTER_XT_TARGET_FLOWOFFLOAD=m" >> kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+
           sed -i '/CONFIG_IB/d;/CONFIG_SDK/d;/CONFIG_BUILDBOT/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d' configs/config_rk3328
           sed -i '/docker/Id;/CONFIG_DISPLAY_SUPPORT/d;/CONFIG_AUDIO_SUPPORT/d' configs/config_rk3328
 
@@ -146,10 +154,6 @@ jobs:
           sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
           ./build.sh nanopi_r2s.mk
 
-      - name: Zip Files
-        run: |
-          find friendlywrt-rk3328/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
-
       - name: Save config.lite
         run: |
           cd friendlywrt-rk3328/friendlywrt
@@ -159,7 +163,10 @@ jobs:
         run: |
           rm -rf ./artifact/
           mkdir -p ./artifact/
-          find friendlywrt-rk3328/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+
+          find friendlywrt-rk3328/out/ -name "FriendlyWrt_*img*" | xargs -I{} sh -c 'f=$(basename $1); zip -r -j "./artifact/${f}.zip" $1' sh {} \;
+          find friendlywrt-rk3328/friendlywrt/bin/targets/rockchip-rk3328/generic -name "openwrt*-squashfs.img" | xargs -I{} sh -c 'f=$(basename $1); zip -r -j "./artifact/${f}.zip" $1' sh {} \;
+          
           cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
           cp friendlywrt-rk3328/out/config.lite ./artifact/
 

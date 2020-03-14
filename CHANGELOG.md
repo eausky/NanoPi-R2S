@@ -1,3 +1,11 @@
+## 20200311
+* 添加 xt_FLOWOFFLOAD
+* 添加 RTL8821CU 源代码
+
+## 20200308
+* 只允许从 LAN 访问 SSH
+* 更换 luci-app-unblockmusic
+
 ## 20200229
 * 官方修复每次重启 Mac 地址变化问题
 
