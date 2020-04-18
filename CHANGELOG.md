@@ -1,3 +1,13 @@
+## 20200418
+* 集成 luci-app-r2sflasher
+
+## 20200417
+* 重新整理 yml
+* 因应上游调整
+
+## 20200403
+* Kernel 5.4.29
+
 ## 20200329
 * 移除 Flow Offloading 补丁
 
@@ -26,6 +36,3 @@
 ## 20200226
 * 添加 frpc 和 npc
 * 支持 Full Cone NAT
-
-force
-1
