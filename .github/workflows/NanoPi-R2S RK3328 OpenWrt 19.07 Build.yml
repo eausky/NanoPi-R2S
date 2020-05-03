@@ -140,9 +140,9 @@ jobs:
           #sed -n 's/\(KERNEL_3RD_DRIVER_NAME=(\)/\1"88XXau" /p' build-kernel.sh
           
           cd ../../
-          cd friendlywrt-rk3328/friendlywrt/target/linux/rockchip-rk3328/base-files/etc/modules.d
-          echo 88XXau > 10-rtl8812au
-          chmod +x 10-rtl8812au
+          #cd friendlywrt-rk3328/friendlywrt/target/linux/rockchip-rk3328/base-files/etc/modules.d
+          #echo 88XXau > 10-rtl8812au
+          #chmod +x 10-rtl8812au
 
 
       - name: Build OpenWrt
