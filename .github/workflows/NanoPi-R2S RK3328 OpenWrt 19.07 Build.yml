@@ -131,6 +131,20 @@ jobs:
         run: |
           ln -s /usr/bin/upx-ucl friendlywrt-rk3328/friendlywrt/staging_dir/host/bin/upx
 
+      - name: Add 8812AU
+        run: |
+          cd friendlywrt-rk3328/scripts/sd-fuse
+          sed -i 's/\(KERNEL_3RD_DRIVERS=(\)/\1"https:\/\/github.com\/friendlyarm\/rtl8812au" /' build-kernel.sh
+          sed -i 's/\(KERNEL_3RD_DRIVER_BRANCHES=(\)/\1"v5.3.4" /' build-kernel.sh
+          sed -i 's/\(KERNEL_3RD_DRIVER_NAME=(\)/\1"88XXau" /' build-kernel.sh
+          #sed -n 's/\(KERNEL_3RD_DRIVER_NAME=(\)/\1"88XXau" /p' build-kernel.sh
+          
+          cd ../../
+          cd friendlywrt-rk3328/friendlywrt/target/linux/rockchip-rk3328/base-files/etc/modules.d
+          echo 88XXau > 10-rtl8812au
+          chmod +x 10-rtl8812au
+
+
       - name: Build OpenWrt
         run: |
           cd friendlywrt-rk3328
