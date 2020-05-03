@@ -1,5 +1,6 @@
 ## 20200418
 * 集成 luci-app-r2sflasher
+* add 8812AU
 
 ## 20200417
 * 重新整理 yml
